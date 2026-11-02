@@ -1,5 +1,9 @@
-import { useState, useEffect, useCallback } from 'react'
-import '../App.css'
+'use client'
+
+import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import { a11y } from '@/content/a11y'
+import { intro } from '@/content/intro'
+import { useHydrated } from '@/lib/use-hydrated'
 
 interface LetterGlyph {
   char: string
@@ -61,6 +65,9 @@ export function BrandIntro({ onComplete }: BrandIntroProps) {
   const [animationKey, setAnimationKey] = useState(0)
   const [isHeld, setIsHeld] = useState(false)
   const [isFadingOut, setIsFadingOut] = useState(false)
+  // The animated stage mounts only after hydration so the CSS animation and the
+  // JS hold/finish timers below start together (as they did in the client-only app).
+  const hydrated = useHydrated()
 
   // Handle completion trigger
   const handleTransitionComplete = useCallback(() => {
@@ -109,7 +116,7 @@ export function BrandIntro({ onComplete }: BrandIntroProps) {
     <div
       className={`brand-reveal-wrapper ${isFadingOut ? 'fade-out' : ''}`}
       role="region"
-      aria-label="UnValor Brand Reveal"
+      aria-label={a11y.intro.wrapper}
     >
       <div className="brand-backdrop" aria-hidden="true" />
 
@@ -118,67 +125,60 @@ export function BrandIntro({ onComplete }: BrandIntroProps) {
         type="button"
         className="intro-skip-btn"
         onClick={handleTransitionComplete}
-        aria-label="Skip intro to homepage"
+        aria-label={a11y.intro.skip}
       >
-        Skip intro →
+        {intro.skip}
       </button>
 
-      <div key={animationKey} className="brand-stage">
-        {/* Animated Brand Wordmark: UnValor° */}
-        <svg
-          className="brand-svg"
-          viewBox="59 39 540 120"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="UnValor°"
-        >
-          <g id="unvalor-letterforms">
-            {LETTERS.map((letter) => (
-              <path
-                key={letter.char}
-                d={letter.d}
-                className="letter-outline"
-                style={
-                  {
-                    '--stroke-len': letter.length,
-                    '--delay': letter.delay,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </g>
+      {hydrated && (
+        <>
+          <div key={animationKey} className="brand-stage">
+            {/* Animated Brand Wordmark: UnValor° */}
+            <svg
+              className="brand-svg"
+              viewBox="59 39 540 120"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label={a11y.intro.wordmark}
+            >
+              <g id="unvalor-letterforms">
+                {LETTERS.map((letter) => (
+                  <path
+                    key={letter.char}
+                    d={letter.d}
+                    className="letter-outline"
+                    style={
+                      {
+                        '--stroke-len': letter.length,
+                        '--delay': letter.delay,
+                      } as CSSProperties
+                    }
+                  />
+                ))}
+              </g>
 
-          {/* Distinctive Warm Cream Accent: Degree Symbol ° */}
-          <circle
-            className="degree-symbol"
-            cx="575"
-            cy="64"
-            r="6"
-            aria-hidden="true"
-          />
-        </svg>
+              {/* Distinctive Warm Cream Accent: Degree Symbol ° */}
+              <circle className="degree-symbol" cx="575" cy="64" r="6" aria-hidden="true" />
+            </svg>
 
-        {/* Subtitle / Signature */}
-        <div className="signature-block">
-          <p className="signature-text">BY UJJESHA</p>
-        </div>
-      </div>
+            {/* Subtitle / Signature */}
+            <div className="signature-block">
+              <p className="signature-text">{intro.signature}</p>
+            </div>
+          </div>
 
-      {/* Review & Replay Controls */}
-      <footer className="controls-dock" aria-label="Animation controls">
-        <button
-          type="button"
-          className="replay-button"
-          onClick={replay}
-          title="Replay animation (or press Space / R)"
-        >
-          <svg className="replay-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
-          </svg>
-          Replay
-        </button>
-        {isHeld && <span className="hold-indicator">Hold 4s Active</span>}
-      </footer>
+          {/* Review & Replay Controls */}
+          <footer className="controls-dock" aria-label={a11y.intro.controls}>
+            <button type="button" className="replay-button" onClick={replay} title={a11y.intro.replayTitle}>
+              <svg className="replay-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+              </svg>
+              {intro.replay}
+            </button>
+            {isHeld && <span className="hold-indicator">{intro.holdIndicator}</span>}
+          </footer>
+        </>
+      )}
     </div>
   )
 }

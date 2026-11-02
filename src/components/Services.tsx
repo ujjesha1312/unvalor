@@ -1,46 +1,11 @@
-import { useState, useRef, useCallback } from 'react'
+'use client'
 
-export interface FeatureCardData {
-  id: string
-  title: string
-  category: string
-  description: string
-  visualType: 'tools' | 'web' | 'automation' | 'collaboration'
-}
-
-const INITIAL_CARDS: FeatureCardData[] = [
-  {
-    id: 'card-tools',
-    title: 'Practical Business Tools',
-    category: 'SMALL BUSINESS SOFTWARE',
-    description: 'Practical digital tools that help small businesses streamline daily operations.',
-    visualType: 'tools',
-  },
-  {
-    id: 'card-web',
-    title: 'Websites & MVPs',
-    category: 'WEB DEVELOPMENT',
-    description: 'Fast, thoughtful websites and useful first versions of digital products.',
-    visualType: 'web',
-  },
-  {
-    id: 'card-ai',
-    title: 'AI & Workflow Automation',
-    category: 'AI & AUTOMATION',
-    description: 'Practical automation that reduces repetitive work and makes information easier to use.',
-    visualType: 'automation',
-  },
-  {
-    id: 'card-collab',
-    title: 'Build With UnValor',
-    category: 'EARLY-STAGE COLLABORATION',
-    description: "Have a real problem to solve? Let's explore a practical first version together.",
-    visualType: 'collaboration',
-  },
-]
+import { useCallback, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react'
+import { a11y } from '@/content/a11y'
+import { INITIAL_CARDS, services, visuals, type FeatureCardData } from '@/content/services'
 
 export function Services() {
-  const [cards, setCards] = useState<FeatureCardData[]>(INITIAL_CARDS)
+  const [cards, setCards] = useState<readonly FeatureCardData[]>(INITIAL_CARDS)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dropTargetId, setDropTargetId] = useState<string | null>(null)
 
@@ -52,7 +17,7 @@ export function Services() {
   const cardRefs = useRef<Map<string, HTMLElement>>(new Map())
 
   // Check if current order differs from initial layout
-  const isRearranged = cards.some((c, idx) => c.id !== INITIAL_CARDS[idx].id)
+  const isRearranged = cards.some((c, idx) => c.id !== INITIAL_CARDS[idx]?.id)
 
   // Register card elements for hit-testing coordinates
   const setCardRef = useCallback((id: string, el: HTMLElement | null) => {
@@ -69,7 +34,7 @@ export function Services() {
     setCards((prev) => {
       const updated = [...prev]
       const [moved] = updated.splice(fromIndex, 1)
-      updated.splice(toIndex, 0, moved)
+      if (moved) updated.splice(toIndex, 0, moved)
       return updated
     })
   }, [])
@@ -83,7 +48,7 @@ export function Services() {
   }
 
   // Keyboard navigation on grip handle
-  const handleGripKeyDown = (e: React.KeyboardEvent, index: number) => {
+  const handleGripKeyDown = (e: KeyboardEvent, index: number) => {
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       e.preventDefault()
       if (index > 0) moveCard(index, index - 1)
@@ -94,7 +59,7 @@ export function Services() {
   }
 
   // Pointer Events drag interaction on the 6-dot grip
-  const handleGripPointerDown = (e: React.PointerEvent<HTMLElement>, id: string) => {
+  const handleGripPointerDown = (e: PointerEvent<HTMLElement>, id: string) => {
     if (e.button !== 0) return // Only primary mouse click or touch
     e.stopPropagation()
 
@@ -111,7 +76,7 @@ export function Services() {
     }
   }
 
-  const handleGripPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+  const handleGripPointerMove = (e: PointerEvent<HTMLElement>) => {
     if (!dragStartPos.current || !draggingIdRef.current) return
 
     const dx = e.clientX - dragStartPos.current.x
@@ -129,12 +94,7 @@ export function Services() {
       for (const [cardId, el] of cardRefs.current.entries()) {
         if (cardId === currentId) continue
         const rect = el.getBoundingClientRect()
-        if (
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom
-        ) {
+        if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
           targetId = cardId
           break
         }
@@ -147,7 +107,7 @@ export function Services() {
     }
   }
 
-  const handleGripPointerUp = (e: React.PointerEvent<HTMLElement>) => {
+  const handleGripPointerUp = (e: PointerEvent<HTMLElement>) => {
     try {
       e.currentTarget.releasePointerCapture(e.pointerId)
     } catch {
@@ -164,7 +124,7 @@ export function Services() {
         if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return prev
         const updated = [...prev]
         const [moved] = updated.splice(fromIdx, 1)
-        updated.splice(toIdx, 0, moved)
+        if (moved) updated.splice(toIdx, 0, moved)
         return updated
       })
     }
@@ -181,7 +141,7 @@ export function Services() {
     setCards(INITIAL_CARDS)
   }
 
-  const scrollToContact = (e: React.MouseEvent<HTMLElement>) => {
+  const scrollToContact = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const target = document.getElementById('contact')
     if (target) {
@@ -192,38 +152,50 @@ export function Services() {
   }
 
   return (
-    <section id="services" className="services-section" aria-label="Services & Capabilities">
+    <section
+      id="services"
+      className="relative border-t border-border-subtle bg-midnight py-[clamp(2rem,4vh,3.25rem)]"
+      aria-label={a11y.services.section}
+    >
       <div className="section-container">
         {/* Compact Section Header */}
-        <header className="services-section-header">
-          <div className="services-header-text">
-            <span className="section-eyebrow">Services & Focus</span>
-            <h2 className="services-title">Capabilities crafted for everyday utility.</h2>
-            <p className="services-subtitle">
-              We build practical digital tools for small businesses and focused software for startups. Drag cards to reorganize your view.
+        <header className="mb-[clamp(1rem,2vh,1.35rem)] flex flex-wrap items-end justify-between gap-6">
+          <div className="max-w-[680px]">
+            <span className="section-eyebrow mb-[0.4rem]">{services.eyebrow}</span>
+            <h2 className="m-0 mb-[0.35rem] font-editorial text-[length:clamp(1.55rem,2.6vw,2.25rem)] leading-[1.15] font-bold tracking-[-0.02em] text-warm-cream">
+              {services.heading}
+            </h2>
+            <p className="m-0 font-brand text-[length:clamp(0.85rem,1vw,0.95rem)] leading-[1.45] text-warm-cream/78">
+              {services.intro}
             </p>
           </div>
 
-          <div className="grid-meta-bar">
-            <span className="grid-hint">
-              <span className="grip-icon-sample" aria-hidden="true">⋮⋮</span>
-              Drag grip to rearrange
+          <div className="mb-[0.2rem] inline-flex shrink-0 items-center gap-[0.65rem]">
+            <span className="inline-flex items-center gap-[0.45rem] rounded-full border border-border-subtle bg-deep-navy/75 px-3 py-[0.3rem] font-brand text-[0.72rem] font-medium tracking-[0.1em] text-warm-cream/75 uppercase">
+              <span className="text-[0.82rem] tracking-[-2px] text-warm-cream" aria-hidden="true">
+                ⋮⋮
+              </span>
+              {services.dragHint}
             </span>
             {isRearranged && (
               <button
                 type="button"
-                className="grid-reset-btn"
+                className="cursor-pointer rounded-full border border-slate-blue/75 bg-transparent px-3 py-[0.3rem] font-brand text-[0.72rem] font-medium tracking-[0.08em] text-warm-cream uppercase [transition:all_0.25s_ease] hover:bg-slate-blue/50 hover:text-warm-cream"
                 onClick={resetOrder}
-                title="Reset cards to default layout"
+                title={a11y.services.resetTitle}
               >
-                ↺ Reset layout
+                {services.reset}
               </button>
             )}
           </div>
         </header>
 
         {/* Compact 2x2 Draggable Grid */}
-        <div className="draggable-widget-grid" role="list" aria-label="Rearrangeable services cards">
+        <div
+          className="relative grid grid-cols-[repeat(2,1fr)] gap-[clamp(0.75rem,1.6vh,1.15rem)] mobile:grid-cols-[1fr] mobile:gap-4"
+          role="list"
+          aria-label={a11y.services.grid}
+        >
           {cards.map((card, index) => {
             const isDragging = draggingId === card.id
             const isTarget = dropTargetId === card.id && draggingId !== card.id
@@ -232,9 +204,7 @@ export function Services() {
               <article
                 key={card.id}
                 ref={(el) => setCardRef(card.id, el)}
-                className={`widget-card ${isDragging ? 'is-dragging' : ''} ${
-                  isTarget ? 'is-drop-target' : ''
-                }`}
+                className={`widget-card ${isDragging ? 'is-dragging' : ''} ${isTarget ? 'is-drop-target' : ''}`}
                 role="listitem"
                 aria-grabbed={isDragging}
               >
@@ -244,8 +214,8 @@ export function Services() {
                     className="widget-grip-zone"
                     tabIndex={0}
                     role="button"
-                    aria-label={`Drag to reorder ${card.title}. Use arrow keys to reorder when focused.`}
-                    title="Drag grip or use arrow keys to reorder"
+                    aria-label={a11y.services.grip(card.title)}
+                    title={a11y.services.gripTitle}
                     onPointerDown={(e) => handleGripPointerDown(e, card.id)}
                     onPointerMove={handleGripPointerMove}
                     onPointerUp={handleGripPointerUp}
@@ -253,22 +223,25 @@ export function Services() {
                     onKeyDown={(e) => handleGripKeyDown(e, index)}
                   >
                     <span className="widget-drag-dots" aria-hidden="true">
-                      <span /><span />
-                      <span /><span />
-                      <span /><span />
+                      <span />
+                      <span />
+                      <span />
+                      <span />
+                      <span />
+                      <span />
                     </span>
                     <span className="widget-category-tag">{card.category}</span>
                   </div>
 
                   {/* Accessible Keyboard Controls */}
-                  <div className="widget-keyboard-actions" aria-label="Card order controls">
+                  <div className="widget-keyboard-actions" aria-label={a11y.services.orderControls}>
                     <button
                       type="button"
                       className="keyboard-move-btn"
                       disabled={index === 0}
                       onClick={() => handleKeyReorder(index, 'prev')}
-                      title="Move card backward"
-                      aria-label={`Move ${card.title} backward`}
+                      title={a11y.services.moveBackTitle}
+                      aria-label={a11y.services.moveBack(card.title)}
                     >
                       ←
                     </button>
@@ -277,8 +250,8 @@ export function Services() {
                       className="keyboard-move-btn"
                       disabled={index === cards.length - 1}
                       onClick={() => handleKeyReorder(index, 'next')}
-                      title="Move card forward"
-                      aria-label={`Move ${card.title} forward`}
+                      title={a11y.services.moveForwardTitle}
+                      aria-label={a11y.services.moveForward(card.title)}
                     >
                       →
                     </button>
@@ -299,22 +272,17 @@ export function Services() {
                       <div className="compact-stock-board">
                         <div className="stock-board-header">
                           <span className="stock-dot" />
-                          <span className="stock-title">Operations · Workflow</span>
+                          <span className="stock-title">{visuals.tools.header}</span>
                         </div>
-                        <div className="stock-item-row ok">
-                          <div className="stock-item-info">
-                            <span className="stock-name">Order Processing</span>
-                            <span className="stock-qty">Active</span>
+                        {visuals.tools.rows.map((row) => (
+                          <div key={row.name} className="stock-item-row ok">
+                            <div className="stock-item-info">
+                              <span className="stock-name">{row.name}</span>
+                              <span className="stock-qty">{row.status}</span>
+                            </div>
+                            <span className="stock-pill ok">{row.pill}</span>
                           </div>
-                          <span className="stock-pill ok">Live</span>
-                        </div>
-                        <div className="stock-item-row ok">
-                          <div className="stock-item-info">
-                            <span className="stock-name">Task Schedule</span>
-                            <span className="stock-qty">Synced</span>
-                          </div>
-                          <span className="stock-pill ok">OK</span>
-                        </div>
+                        ))}
                       </div>
                     )}
 
@@ -323,9 +291,11 @@ export function Services() {
                       <div className="compact-wireframe-board">
                         <div className="wireframe-bar">
                           <div className="wireframe-dots">
-                            <span /><span /><span />
+                            <span />
+                            <span />
+                            <span />
                           </div>
-                          <span className="wireframe-address">studio.unvalor.com</span>
+                          <span className="wireframe-address">{visuals.web.address}</span>
                         </div>
                         <div className="wireframe-body">
                           <div className="wf-hero-split">
@@ -344,20 +314,15 @@ export function Services() {
                     {card.visualType === 'automation' && (
                       <div className="compact-pipeline-board">
                         <div className="pipeline-flow">
-                          <div className="pipeline-step">
-                            <span className="step-tag">Input</span>
-                            <span className="step-sub">"New task"</span>
-                          </div>
-                          <span className="flow-arrow">→</span>
-                          <div className="pipeline-step highlight">
-                            <span className="step-tag">Automation</span>
-                            <span className="step-sub">Workflow active</span>
-                          </div>
-                          <span className="flow-arrow">→</span>
-                          <div className="pipeline-step">
-                            <span className="step-tag">Summary</span>
-                            <span className="step-sub">Clear update</span>
-                          </div>
+                          {visuals.automation.steps.map((step, stepIndex) => (
+                            <PipelineStep
+                              key={step.tag}
+                              tag={step.tag}
+                              sub={step.sub}
+                              highlight={stepIndex === 1}
+                              withArrow={stepIndex > 0}
+                            />
+                          ))}
                         </div>
                       </div>
                     )}
@@ -367,14 +332,13 @@ export function Services() {
                       <div className="compact-collab-board">
                         <div className="collab-status-chip">
                           <span className="status-live-dot" />
-                          <span>Direct Founder Collaboration</span>
+                          <span>{visuals.collaboration.status}</span>
                         </div>
-                        <button
-                          type="button"
-                          className="widget-cta-button"
-                          onClick={scrollToContact}
-                        >
-                          Start a project <span className="arrow-icon" aria-hidden="true">↗</span>
+                        <button type="button" className="widget-cta-button" onClick={scrollToContact}>
+                          {visuals.collaboration.cta}{' '}
+                          <span className="arrow-icon" aria-hidden="true">
+                            ↗
+                          </span>
                         </button>
                       </div>
                     )}
@@ -386,5 +350,24 @@ export function Services() {
         </div>
       </div>
     </section>
+  )
+}
+
+interface PipelineStepProps {
+  tag: string
+  sub: string
+  highlight: boolean
+  withArrow: boolean
+}
+
+function PipelineStep({ tag, sub, highlight, withArrow }: PipelineStepProps) {
+  return (
+    <>
+      {withArrow && <span className="flow-arrow">→</span>}
+      <div className={`pipeline-step${highlight ? ' highlight' : ''}`}>
+        <span className="step-tag">{tag}</span>
+        <span className="step-sub">{sub}</span>
+      </div>
+    </>
   )
 }
