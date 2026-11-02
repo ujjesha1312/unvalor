@@ -1,0 +1,192 @@
+/* ==========================================================================
+   UNVALOR° — GLOBAL STYLES (Tailwind CSS v4)
+   Visual identity: Midnight Navy · Deep Navy · Slate Blue · Warm Cream
+   ========================================================================== */
+
+/*
+ * Tailwind is imported WITHOUT Preflight on purpose. The site was built on
+ * browser defaults plus the small reset below (e.g. `line-height: normal`,
+ * native button metrics). Preflight would shift every line box and button.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Scoped component CSS — pieces that read better as plain CSS than utilities. */
+@import '../components/BrandIntro.css' layer(components);
+@import '../components/Navbar.css' layer(components);
+@import '../components/Services.css' layer(components);
+
+/* Only scan app source for class names (not agent config or docs). */
+@source not '../../.claude';
+@source not '../../*.md';
+
+/* --------------------------------------------------------------------------
+   Variants — match the original CSS exactly
+   -------------------------------------------------------------------------- */
+/* Plain :hover (Tailwind v4 defaults to `@media (hover: hover)` only). */
+@custom-variant hover (&:hover);
+/* Desktop-first, inclusive breakpoints from the original stylesheet. */
+@custom-variant tablet (@media (max-width: 1024px));
+@custom-variant mobile (@media (max-width: 768px));
+@custom-variant small (@media (max-width: 480px));
+
+/* --------------------------------------------------------------------------
+   Design tokens
+   -------------------------------------------------------------------------- */
+@theme static {
+  /* Palette */
+  --color-midnight: #010736;
+  --color-deep-navy: #0d1c42;
+  --color-slate-blue: #22396f;
+  --color-warm-cream: #fcf1d0;
+
+  /* Semantic */
+  --color-bg-primary: #010736;
+  --color-bg-surface: #0d1c42;
+  --color-bg-surface-elevated: rgba(13, 28, 66, 0.85);
+  --color-border-slate: #22396f;
+  --color-border-subtle: rgba(34, 57, 111, 0.55);
+  --color-border-cream: rgba(252, 241, 208, 0.22);
+  --color-text-primary: #fcf1d0;
+  --color-text-secondary: rgba(252, 241, 208, 0.82);
+  --color-text-muted: rgba(252, 241, 208, 0.6);
+  --color-text-subtle: rgba(252, 241, 208, 0.38);
+
+  /* Typography — font faces are injected by next/font on <html> */
+  --font-brand: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-editorial: var(--font-syne), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Motion — house easing */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-dropdown-entrance: dropdownEntrance 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-orbit: orbitRotate 16s linear infinite;
+
+  @keyframes dropdownEntrance {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes orbitRotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    color-scheme: dark;
+    background-color: var(--color-midnight);
+    color: var(--color-warm-cream);
+    font-family: var(--font-brand);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: var(--color-midnight);
+    color: var(--color-warm-cream);
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-midnight);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(34, 57, 111, 0.6);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-slate-blue);
+  }
+
+  ::selection {
+    background-color: rgba(34, 57, 111, 0.65);
+    color: var(--color-warm-cream);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shared section primitives
+   -------------------------------------------------------------------------- */
+@layer components {
+  .section-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-eyebrow {
+    display: inline-block;
+    font-family: var(--font-brand);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-warm-cream);
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    .section-container {
+      padding: 0 1.25rem;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Intro gating (unlayered on purpose: must beat utilities)
+   An inline script in <head> sets html[data-intro="skip"] before first paint
+   when the intro was already seen this session or reduced motion is preferred,
+   so the server-rendered intro never flashes.
+   -------------------------------------------------------------------------- */
+html[data-intro='skip'] .brand-reveal-wrapper {
+  display: none;
+}
+
+html[data-intro='skip'] .homepage-wrapper {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+}
