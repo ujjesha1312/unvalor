@@ -1,75 +1,55 @@
-# React + TypeScript + Vite
+# UnValor°
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Single-page marketing site for UnValor°, a digital product studio.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- [Next.js 16](https://nextjs.org) (App Router, statically prerendered) + React 19
+- TypeScript (strict)
+- [Tailwind CSS v4](https://tailwindcss.com) via `@tailwindcss/postcss` — design tokens live in `src/app/globals.css` (`@theme`)
+- Fonts: Space Grotesk and Syne via `next/font/google`
+- Deployed on [Vercel](https://vercel.com) (Next.js is auto-detected; no `vercel.json` needed)
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Requires Node.js 20.9 or newer.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build (also type-checks) |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint (`eslint-config-next`) |
+| `npm run typecheck` | `tsc --noEmit` |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 
 ```
+content.md            All site copy, in page order (source of truth for wording)
+src/
+  app/
+    layout.tsx        <html>, fonts, metadata, pre-paint intro gate
+    page.tsx          Page composition
+    globals.css       Tailwind import, design tokens, base styles
+  components/         One file per section (+ scoped CSS for BrandIntro, Navbar, Services)
+  content/            Typed copy modules — mirror content.md exactly
+  lib/                Small client helpers (intro gate, hydration hook)
+public/favicon.svg
+```
+
+## Editing copy
+
+Change the wording in `content.md` **and** the matching module in `src/content/` — the two must stay identical.
+Studio contact settings (email, `isVerified`) are in `src/content/contact.ts`.
+
+## Deploy
+
+Push to the connected Git repository; Vercel builds with `next build` automatically.
+To deploy manually: `npx vercel` (preview) or `npx vercel --prod`.
