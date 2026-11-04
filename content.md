@@ -10,45 +10,45 @@ The typed modules in `src/content/` mirror this file exactly — change both tog
 
 Module: `src/content/site.ts`
 
-- **Page title:** UnValor°
-- **Meta description:** We turn thoughtful ideas into digital products built for real life.
-  _(No description existed before the migration; this reuses the Hero subhead verbatim.)_
+- **Site name:** UnValor°
+- **Page title:** UnValor° — Less chaos. More customers.
+- **Meta description:** UnValor builds websites, WhatsApp replies and automations for local businesses.
 
 ### Brand
 
 - **Wordmark:** UnValor
-- **Degree mark:** °
+- **Degree mark:** ° (drawn as an SVG ring after the wordmark)
 
 ### Nav items
 
-| Label | Anchor |
-|---|---|
-| Home | `#hero` |
-| Services | `#services` |
-| Our Approach | `#approach` |
-| About | `#about` |
-| Contact | `#contact` (opens the contact dropdown) |
+| Label | Route | Next-page band |
+|---|---|---|
+| Services | `/services` | Work |
+| Work | `/work` | About |
+| About | `/about` | Contact |
+| Contact | `/contact` | Services |
+
+The home page (`/`) keeps every section in one scroll; each section also has its own page with the section, room for page-only content, and a "Next" band. The ° indicator sits on the current page's link and follows hover. The logo links to `/`. Every contact CTA links to `/contact`.
+
+### Page titles (template: `{title} — UnValor°`)
+
+| Route | Title | Description |
+|---|---|---|
+| `/services` | Services | Practical digital tools, websites, MVPs and automation for small businesses and startups. |
+| `/work` | Work | Selected work from UnValor°. Case studies arrive as projects ship. |
+| `/about` | About | UnValor° is a small studio in Visakhapatnam building for busy businesses. |
+| `/contact` | Contact | Tell us what you're building. Let's figure out the next step. |
 
 ### Calls to action
 
-- **Desktop CTA:** Let's talk
-- **Mobile CTA:** Let's talk
-- **Mobile drawer CTA:** Let's talk ↗
-- **Mobile drawer replay button:** Replay Brand Reveal
-
-### Contact dropdown (Navbar)
-
-- **Eyebrow:** START A CONVERSATION
-- **Option 1 title:** Send an Email
-- **Option 1 description:** Have a project, product idea, or question? Write to us.
-- **Option 1 action (when email verified):** Compose Email
-- **Option 1 mailto subject (when email verified):** UnValor Inquiry
-- **Option 1 unverified tag:** Setup in progress · Email pending
-- **Option 2 title:** Explore UnValor
-- **Option 2 description:** See what we're building and the problems we want to solve.
-- **Option 2 action:** Explore the Studio
-- **Footer link:** Go to inquiry section ↓
-- **Status pill:** _uses Contact config `statusNote`_ (see §6)
+- **Text link:** Talk to us → (`/contact`)
+- **Primary button:** Book a call — hover text: Pick a time (`/contact`)
+- **Mobile menu button:** Menu
+- **Drawer close button:** Close
+- **Drawer link numbers:** (01), (02), (03), (04)
+- **Drawer note:** ° Reply within a working day
+- **Drawer primary button:** Book a free 20-min call (`/contact`)
+- **Drawer secondary button:** Talk to us (`/contact`)
 
 ---
 
@@ -70,93 +70,136 @@ Module: `src/content/intro.ts`
 
 Module: `src/content/hero.ts`
 
-- **Headline:** Ideas, / made tangible.
-  - Line 1: Ideas,
-  - Line 2: made tangible.
-- **Subhead:** We turn thoughtful ideas into digital products built for real life.
-- **Primary button:** Explore our work
-- **Secondary button:** Let's talk
+- **Eyebrow:** (00) Websites · WhatsApp · Automations
+- **Headline:** Less chaos. / More customers.
+  - Line 1: Less chaos.
+  - Line 2: More customers. ("customers" is underlined)
+- **Subhead:** We build the website, WhatsApp replies and quiet systems that catch every enquiry.
+- **Primary button:** Book a free 20-min call — hover text: Pick a time that suits (`/contact`)
+- **Secondary button:** See our work (`#services`)
+- **Left margin (vertical):** Understand → Simplify → Build
+- **Right margin:** Index °00 / Visakhapatnam, IN
 
-### Focus cards
+### Film frame
 
-| # | Tag | Title | Body |
-|---|---|---|---|
-| 01 | Small Business Tools | Everyday Operations | Practical digital tools and simple workflows built to eliminate friction and solve routine operational headaches for small businesses. |
-| 02 | Startup MVPs | Practical Software | Fast, dependable web applications and digital tools for early-stage founders looking to test real ideas with real people, not bloated roadmaps. |
-| 03 | Our Approach | Human-Centered Utility | Digital craft stripped of tech jargon. We design software around existing user habits, multi-language needs, and genuine daily usefulness. |
+| # | Chapter | Starts at |
+|---|---|---|
+| (01) | Understand | 0:00 |
+| (02) | Simplify | 0:20 |
+| (03) | Build | 0:40 |
 
-- **Status line:** We're actively building at UnValor. · Direct founder collaboration
+- **Poster words:** Understand. · Simplify. · Build
+- **Play hint:** Play · 60s
+- **Time display:** {elapsed} / 1:00
+- **Caption:** Watch how UnValor works · 60s
+
+### Orbit tags
+
+| Label | Channel |
+|---|---|
+| New enquiry | WhatsApp |
+| Replied in seconds | Auto |
+| Booked · Tue 11:30 | Calendar (cream tag) |
+| Missed call → texted back | Phone |
+| Found on Google | Website |
+| Reminder sent | Tomorrow |
 
 ---
 
 ## 4. Services
 
-Module: `src/content/services.ts`
+Module: `src/content/services.ts` — rendered as the feature bento (`src/components/ui/feature-section-with-bento-grid.tsx`).
 
-- **Eyebrow:** Services & Focus
+- **Label:** (01) Services & Focus
 - **Heading:** Capabilities crafted for everyday utility.
-- **Intro:** We build practical digital tools for small businesses and focused software for startups. Drag cards to reorganize your view.
-- **Drag hint:** Drag grip to rearrange
-- **Reset button:** ↺ Reset layout _(shown only after the cards are rearranged)_
+- **Intro:** We build practical digital tools for small businesses and focused software for startups.
 
-### Cards (default order)
+### Cards (bento order; 01 and 04 span two columns on desktop)
 
-#### Card 1 — `card-tools`
+#### (01) `card-tools` — wide
 
-- **Tag:** SMALL BUSINESS SOFTWARE
+- **Tag:** Small business software
 - **Title:** Practical Business Tools
 - **Body:** Practical digital tools that help small businesses streamline daily operations.
-- **Mini visual (operations board):**
-  - Header: Operations · Workflow
-  - Row 1: Order Processing — Active — pill: Live
-  - Row 2: Task Schedule — Synced — pill: OK
+- **Mini visual (operations board):** Operations · Workflow — Order Processing / Active / Live — Task Schedule / Synced / OK
 
-#### Card 2 — `card-web`
+#### (02) `card-web`
 
-- **Tag:** WEB DEVELOPMENT
+- **Tag:** Web development
 - **Title:** Websites & MVPs
 - **Body:** Fast, thoughtful websites and useful first versions of digital products.
-- **Mini visual (browser wireframe):**
-  - Address bar: studio.unvalor.com
+- **Mini visual (browser wireframe):** studio.unvalor.com
 
-#### Card 3 — `card-ai`
+#### (03) `card-ai`
 
-- **Tag:** AI & AUTOMATION
+- **Tag:** AI & automation
 - **Title:** AI & Workflow Automation
 - **Body:** Practical automation that reduces repetitive work and makes information easier to use.
-- **Mini visual (pipeline):**
-  - Step 1: Input — "New task"
-  - Step 2: Automation — Workflow active
-  - Step 3: Summary — Clear update
+- **Mini visual (pipeline):** Input "New task" → Automation · Workflow active → Summary · Clear update
 
-#### Card 4 — `card-collab`
+#### (04) `card-collab` — wide
 
-- **Tag:** EARLY-STAGE COLLABORATION
+- **Tag:** Early-stage collaboration
 - **Title:** Build With UnValor
 - **Body:** Have a real problem to solve? Let's explore a practical first version together.
-- **Mini visual (collaboration):**
-  - Status chip: Direct Founder Collaboration
-  - Button: Start a project
+- **Mini visual:** status chip "Direct Founder Collaboration" + button "Start a project" — hover text: Let's talk (`/contact`)
+
+---
+
+## 4b. Work
+
+Module: `src/content/work.ts` — **placeholders**, replace with real case studies as they ship.
+
+- **Label:** (02) Work
+- **Heading:** Selected work, on the way.
+- **Intro:** We're early, and honest about it. These slots fill up as projects ship.
+- **Hint:** Drag or scroll to explore
+- **Expanded-view status:** Case study soon
+
+| # | Kind | Title | Description | Span |
+|---|---|---|---|---|
+| 01 | Website | A booking-ready website | For a local service business. The full story once it ships. | lg |
+| 02 | WhatsApp | An enquiry reply flow | Answers the usual questions before anyone picks up the phone. | sm |
+| 03 | Automation | Missed-call text-back | Every missed call gets a reply and a way to book. | sm |
+| 04 | First version | A founder’s first product | A focused MVP, built to learn from real users. | tall |
+| 05 | Automation | Appointment reminders | Fewer no-shows, without anyone chasing. | sm |
+| 06 | Website | A calmer storefront | Clear pages, one obvious next step. | wide |
 
 ---
 
 ## 5. About
 
-Module: `src/content/about.ts`
+Module: `src/content/about.ts` — values marked [PLACEHOLDER] are waiting on real copy, names or photos.
 
-- **Eyebrow:** ABOUT UNVALOR°
-- **Heading:** We believe useful software starts with understanding the problem.
-- **Paragraph:** We're building UnValor around a simple idea: technology should make everyday work easier, not add another layer of complexity.
-- **Principles label:** Studio Principles
-- **Expand hint:** Click cards to expand detail
+- **Label:** (A) Studio
+- **Heading [PLACEHOLDER]:** A small studio for busy businesses.
+- **Lead [PLACEHOLDER]:** We set up the website and the quiet systems behind it, so you can get back to the work only you can do.
 
-### Principles
+### Bento
 
-| # | Title | Summary | Expanded detail |
-|---|---|---|---|
-| 01 | Understand | Find the real problem. | We start by understanding the everyday problem, the people experiencing it, and the way they already work. |
-| 02 | Simplify | Remove unnecessary steps. | We look for simpler workflows that reduce friction instead of adding more tools, complicated dashboards, or unnecessary processes. |
-| 03 | Build | Make something useful. | We turn practical ideas into thoughtful digital products, then refine them around what people actually need. |
+- **Large card:** studio/founder photo slot (4:5 or 1:1, navy→cream duotone). Until then: a large outlined ° that draws on scroll.
+  - Caption: [PLACEHOLDER] Photo: studio, Visakhapatnam
+- **Right-top card:**
+  - Title [PLACEHOLDER]: Built around your day
+  - Body [PLACEHOLDER]: We start with how you already work: the calls, the messages, the busy hours. Then we fit the tools to that, not the other way round.
+  - Button: See how we work → — hover text: Understand first (`#services`, [PLACEHOLDER] target)
+- **Right-bottom card (`#approach`):** Understand → Simplify → Build as three stacked steps (outline, tint, solid cream). Accessible name: Understand, then simplify, then build
+
+### Founders note
+
+- **Label:** (A) A note from the founders
+- **Portrait label:** Founder
+- **Founders [PLACEHOLDER]:** Ujjesha — Design & build (supports 1 or 2; a second portrait stacks beneath)
+- **Note [PLACEHOLDER]:** We started UnValor° after watching good local businesses lose customers to missed calls and slow replies. Not because the work was bad, but because nobody had a spare minute to answer. We build for the people running the shop, the clinic, the studio. We keep things simple enough that you'll actually use them. And we'll always tell you plainly what something will and won't do.
+- **Sign-off:** — {founder names joined with &}
+
+### First-clients marquee
+
+- **Label:** (B) Our first clients
+- **Logos [PLACEHOLDER]:** `CLIENT_LOGOS` in `about.ts` (name + optional SVG). Empty → 6 × "Your business" slots
+- **Behaviour:** scrolls left in an endless loop; pauses on hover, keyboard focus or the button. Reduced motion → still grid, no button
+- **Button:** Pause / Play — accessible names: Pause the client logos / Play the client logos
+- **Line [PLACEHOLDER]:** We're taking our first five clients.
 
 ---
 
@@ -164,14 +207,12 @@ Module: `src/content/about.ts`
 
 Module: `src/content/contact.ts`
 
-- **Eyebrow:** LET'S CONNECT
+- **Label:** (04) Contact
 - **Heading:** Have an idea? / Let's make it real.
   - Line 1: Have an idea?
   - Line 2: Let's make it real.
 - **Paragraph:** Tell us what you're building. Let's figure out the next step.
-- **Studio badge:** U° · UNVALOR° · EARLY-STAGE STUDIO
-  - Badge mark: U°
-  - Badge label: UNVALOR° · EARLY-STAGE STUDIO
+- **Status line:** ° We're actively building at UnValor. _(CONTACT_CONFIG.statusNote)_
 - **Prompt:** What are you working on?
 
 ### Chips
@@ -186,7 +227,8 @@ Module: `src/content/contact.ts`
 
 ### Email channel
 
-- **Channel label:** DIRECT EMAIL
+- **Channel label:** Direct email
+- **While `isVerified` is false:** address shown as plain text with the unverified notice; only Copy email is offered
 - **Email:** hello@unvalor.com
 - **Primary button:** Send us an email
 - **Copy button:** Copy email
@@ -205,32 +247,28 @@ Module: `src/content/contact.ts`
 
 Module: `src/content/footer.ts`
 
-- **Brand:** UnValor°
-- **Signature:** BY UJJESHA
-- **Tagline:** Digital product studio for founders, creators, and engineering teams.
+- **Statement:** Let’s make it / run calm°
+- **Button:** Book a free 20-min call — hover text: Pick a time that suits (`/contact`)
 
-### Navigation column
-
-- **Heading:** Navigation
+### (A) Studio column
 
 | Label | Anchor |
 |---|---|
-| Home | `#hero` |
 | Services | `#services` |
-| Our Approach | `#approach` |
-| About Studio | `#about` |
+| Work | `#work` |
+| About | `#about` |
 | Contact | `#contact` |
 
-### Experience column
+### (B) Talk column
 
-- **Heading:** Experience
-- **Replay button:** Replay Brand Reveal
-- **Back to top button:** ↑ Back to Top
+- **Email:** _uses Contact config `email`_ (see §6). Links to `#contact` until `isVerified` is true, then becomes a mailto.
 
 ### Bottom bar
 
-- **Copyright:** © {year} UnValor. All rights reserved.
-- **Colophon:** Midnight Navy · Deep Navy · Slate Blue · Warm Cream
+- **Left:** © UnValor° Studio · By Ujjesha
+- **Middle:** Understand → Simplify → Build
+- **Right:** Back to top ↑ (`#hero`)
+- **(B) Talk note:** We're actively building at UnValor.
 
 ---
 
@@ -246,31 +284,27 @@ Module: `src/content/a11y.ts`. These are `aria-label`, `title` and accessible-na
 - **Controls aria-label:** Animation controls
 - **Replay button title:** Replay animation (or press Space / R)
 
+### Page
+
+- **Skip link:** Skip to content
+
 ### Navbar
 
-- **Brand link aria-label:** UnValor home
-- **Nav aria-label:** Main Navigation
-- **Menu toggle aria-label (closed):** Open menu
-- **Menu toggle aria-label (open):** Close menu
-- **Dropdown close aria-label:** Close contact dropdown
+- **Brand link aria-label:** UnValor, home
+- **Nav aria-label:** Primary
+- **Drawer dialog aria-label:** Menu
 
 ### Hero
 
-- **Section aria-label:** Introduction to UnValor
-- **Focus cards aria-label:** UnValor Focus Areas
+- **Play button aria-label:** Play film / Pause film (while playing)
+- **Orbit tag list aria-label:** What runs once we're done
 
-### Services
+### Work
 
-- **Section aria-label:** Services & Capabilities
-- **Reset button title:** Reset cards to default layout
-- **Grid aria-label:** Rearrangeable services cards
-- **Grip aria-label:** Drag to reorder {title}. Use arrow keys to reorder when focused.
-- **Grip title:** Drag grip or use arrow keys to reorder
-- **Order controls aria-label:** Card order controls
-- **Move back title:** Move card backward
-- **Move back aria-label:** Move {title} backward
-- **Move forward title:** Move card forward
-- **Move forward aria-label:** Move {title} forward
+- **Scroller:** Work slots. Drag, scroll, or use the arrow buttons.
+- **Arrows:** Show previous work / Show next work
+- **Tile:** Open {title}
+- **Close:** Close preview
 
 ### About
 
@@ -284,10 +318,6 @@ Module: `src/content/a11y.ts`. These are `aria-label`, `title` and accessible-na
 - **Email link title:** Compose email to hello@unvalor.com
 - **Primary button title:** Send email via your email client
 - **Copy button aria-label:** Copy email address
-
-### Footer
-
-- **Replay button title:** Replay the animated brand-reveal intro sequence
 
 ---
 

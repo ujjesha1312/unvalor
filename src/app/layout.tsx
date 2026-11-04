@@ -13,7 +13,7 @@ const spaceGrotesk = Space_Grotesk({
 
 const syne = Syne({
   subsets: ['latin'],
-  weight: ['500', '700'],
+  weight: ['500', '600', '700'],
   display: 'swap',
 })
 
@@ -34,14 +34,14 @@ const fontVariables = {
 export const metadata: Metadata = {
   // TODO: set metadataBase to the production origin once the domain is final,
   // e.g. new URL('https://<production-domain>'), so OG/Twitter URLs resolve.
-  title: site.title,
+  title: { default: site.title, template: `%s — ${site.name}` },
   description: site.description,
   icons: {
     icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
   },
   openGraph: {
     type: 'website',
-    siteName: site.title,
+    siteName: site.name,
     title: site.title,
     description: site.description,
     // TODO: add `url` (canonical production URL) and `images` (1200×630 share image).
@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
       </head>
       <body>
-        <div className="relative flex min-h-screen w-full flex-col bg-midnight">{children}</div>
+        <div className="uv-grain relative flex min-h-screen w-full flex-col bg-midnight">{children}</div>
       </body>
     </html>
   )
