@@ -14,8 +14,8 @@
 
 /* Scoped component CSS — pieces that read better as plain CSS than utilities. */
 @import '../components/BrandIntro.css' layer(components);
-@import '../components/Navbar.css' layer(components);
-@import '../components/Services.css' layer(components);
+@import '../components/uv.css' layer(components);
+@import '../components/sections.css' layer(components);
 
 /* Only scan app source for class names (not agent config or docs). */
 @source not '../../.claude';
@@ -87,6 +87,52 @@
    Base
    -------------------------------------------------------------------------- */
 @layer base {
+  /* uv tokens — from ref/tokens.css (tokens.json). Used by components/uv.css. */
+  :root {
+    --midnight: #010736;
+    --deep: #0d1c42;
+    --slate: #22396f;
+    --cream: #fcf1d0;
+    --bg: var(--midnight);
+    --surface: var(--deep);
+    --surface-sunken: rgba(1, 7, 54, 0.6);
+    --tint-cream-06: rgba(252, 241, 208, 0.06);
+    --tint-cream-12: rgba(252, 241, 208, 0.12);
+    --tint-slate-40: rgba(34, 57, 111, 0.4);
+    --ink: var(--cream);
+    --ink-display: rgba(252, 241, 208, 0.88);
+    --ink-muted: rgba(252, 241, 208, 0.72);
+    --ink-subtle: rgba(252, 241, 208, 0.54);
+    --on-cream: var(--midnight);
+    --on-cream-muted: var(--slate);
+    --line: var(--slate);
+    --line-control: rgba(252, 241, 208, 0.4);
+    --line-mark: var(--cream);
+    --focus: var(--cream);
+    --scrim: rgba(1, 7, 54, 0.62);
+    --font-display: var(--font-syne), 'Space Grotesk', system-ui, sans-serif;
+    --font-body: var(--font-space-grotesk), system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 72px;
+    --space-9: 120px;
+    --radius-paper: 3px;
+    --radius-pill: 999px;
+    --stroke-draw: 1.5px;
+    --stroke-mark: 3px;
+    --opacity-grain: 0.05;
+    --dur-fast: 180ms;
+    --dur-base: 420ms;
+    --dur-draw: 1400ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-draw: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
   :root {
     color-scheme: dark;
     background-color: var(--color-midnight);
@@ -141,35 +187,6 @@
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
-    }
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Shared section primitives
-   -------------------------------------------------------------------------- */
-@layer components {
-  .section-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .section-eyebrow {
-    display: inline-block;
-    font-family: var(--font-brand);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--color-warm-cream);
-    margin-bottom: 1rem;
-  }
-
-  @media (max-width: 480px) {
-    .section-container {
-      padding: 0 1.25rem;
     }
   }
 }

@@ -1,0 +1,54 @@
+/* UnValor° tokens — from tokens.json. Use as CSS variables (React/Tailwind friendly). */
+@font-face { font-family: 'Syne'; font-weight: 600; font-style: normal; font-display: swap; src: url('./fonts/syne-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Syne'; font-weight: 700; font-style: normal; font-display: swap; src: url('./fonts/syne-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 400; font-style: normal; font-display: swap; src: url('./fonts/space-grotesk-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 500; font-style: normal; font-display: swap; src: url('./fonts/space-grotesk-latin-500-normal.woff2') format('woff2'); }
+:root {
+  --midnight: #010736;
+  --deep: #0D1C42;
+  --slate: #22396F;
+  --cream: #FCF1D0;
+  --bg: var(--midnight);
+  --surface: var(--deep);
+  --surface-sunken: rgba(1,7,54,0.6);
+  --tint-cream-06: rgba(252,241,208,0.06);
+  --tint-cream-12: rgba(252,241,208,0.12);
+  --tint-slate-40: rgba(34,57,111,0.4);
+  --ink: var(--cream);
+  --ink-display: rgba(252,241,208,0.88);
+  --ink-muted: rgba(252,241,208,0.72);
+  --ink-subtle: rgba(252,241,208,0.54);
+  --on-cream: var(--midnight);
+  --on-cream-muted: var(--slate);
+  --line: var(--slate);
+  --line-control: rgba(252,241,208,0.4);
+  --line-mark: var(--cream);
+  --focus: var(--cream);
+  --scrim: rgba(1,7,54,0.62);
+  --font-display: Syne, "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 120px;
+  --space-10: 192px;
+  --radius-0: 0px;
+  --radius-paper: 3px;
+  --radius-bubble: 14px;
+  --radius-pill: 999px;
+  --stroke-hair: 1px;
+  --stroke-draw: 1.5px;
+  --stroke-mark: 3px;
+  --opacity-grain: 0.05;
+  --opacity-behind: 0.5;
+  --dur-fast: 180ms;
+  --dur-base: 420ms;
+  --dur-draw: 1400ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-draw: cubic-bezier(0.65, 0, 0.35, 1);
+}

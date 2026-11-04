@@ -1,109 +1,133 @@
 'use client'
 
-import { useState } from 'react'
-import { a11y } from '@/content/a11y'
-import { about, PRINCIPLES } from '@/content/about'
+import type { CSSProperties } from 'react'
+import { about, FOUNDERS, type Photo } from '@/content/about'
+import { useReveal } from '@/lib/use-reveal'
+import Link from 'next/link'
+import { ClientMarquee } from './ClientMarquee'
+import { ArrowIcon } from './Logo'
 
-export function About() {
-  const [activeCard, setActiveCard] = useState<string>('understand')
+/** Reveal step (110ms each): header 0 · large 1 · right cards 2 · note 3 · strip 4. */
+const step = (i: number) => ({ '--i': i }) as CSSProperties
 
-  const toggleCard = (id: string) => {
-    setActiveCard((current) => (current === id ? '' : id))
-  }
+interface AboutProps {
+  /** Rendered as its own page: the title becomes the page <h1>. */
+  asPage?: boolean
+}
+
+export function About({ asPage = false }: AboutProps) {
+  const ref = useReveal<HTMLDivElement>()
+  const signOff = FOUNDERS.map((f) => f.name).join(' & ')
+  const Heading = asPage ? 'h1' : 'h2'
 
   return (
-    <section
-      id="about"
-      className="relative border-t border-border-subtle bg-midnight py-28 mobile:py-20"
-      aria-label={a11y.about.section}
-    >
-      <div className="section-container">
-        {/* Section Header */}
-        <header className="mb-14 max-w-[760px] text-left mobile:mb-10">
-          <span className="section-eyebrow">{about.eyebrow}</span>
-          <h2 className="mx-0 mt-4 mb-5 font-editorial text-[length:clamp(2rem,4vw,2.85rem)] leading-[1.2] font-semibold tracking-[-0.015em] text-warm-cream">
-            {about.heading}
-          </h2>
-          <p className="m-0 font-brand text-[length:clamp(1.05rem,1.8vw,1.2rem)] leading-[1.65] text-warm-cream/85">
-            {about.lead}
-          </p>
+    <section id="about" className={`uv-root uv-sec${asPage ? ' uv-sec--page' : ''}`} aria-labelledby="about-title">
+      <div ref={ref} className="uv-sec__in uv-ab uv-reveal">
+        {/* 1 · Header row */}
+        <header className="uv-ab__head" style={step(0)}>
+          <div>
+            <p className="uv-label uv-label--rule">
+              <span className="uv-label__num">{about.num}</span> {about.label}
+            </p>
+            <Heading className="uv-sec__title" id="about-title">
+              {about.heading}
+            </Heading>
+          </div>
+          <p className="uv-ab__lead">{about.lead}</p>
         </header>
 
-        {/* Interactive Principle Cards */}
-        <div id="approach" className="mb-0" aria-label={a11y.about.principles}>
-          <div className="mb-7 flex items-center justify-between border-b border-slate-blue/60 pb-4">
-            <span className="font-brand text-[0.75rem] font-semibold tracking-[0.2em] text-warm-cream/65 uppercase">
-              {about.principlesLabel}
+        {/* 2 · Large card: photo slot / drawn ° */}
+        <figure className="uv-crop uv-ab__card uv-ab__card--lg" style={step(1)}>
+          <span className="uv-crop__m uv-crop__m--tl" aria-hidden="true" />
+          <span className="uv-crop__m uv-crop__m--tr" aria-hidden="true" />
+          <span className="uv-crop__m uv-crop__m--bl" aria-hidden="true" />
+          <span className="uv-crop__m uv-crop__m--br" aria-hidden="true" />
+          {about.photo ? (
+            <DuotonePhoto photo={about.photo} className="uv-ab__photo" />
+          ) : (
+            <svg className="uv-ab__mark" viewBox="0 0 120 120" aria-hidden="true">
+              <circle className="uv-ab__draw" cx="60" cy="60" r="44" pathLength={1} />
+            </svg>
+          )}
+          <figcaption className="uv-ab__caption uv-micro">{about.photoCaption}</figcaption>
+        </figure>
+
+        {/* 3 · Right-top card */}
+        <article className="uv-ab__card uv-ab__card--text" style={step(2)}>
+          <svg className="uv-ab__icon" viewBox="0 0 20 20" aria-hidden="true">
+            <circle className="uv-ab__draw" cx="10" cy="10" r="6.5" pathLength={1} />
+          </svg>
+          <h3 className="uv-ab__title">{about.card.title}</h3>
+          <p className="uv-ab__body">{about.card.body}</p>
+          <Link className="uv-btn uv-btn--secondary uv-btn--sm uv-ab__btn" href={about.card.href}>
+            <span className="uv-swap">
+              <span>{about.card.button}</span>
+              <span aria-hidden="true">{about.card.buttonHover}</span>
             </span>
-            <span className="font-brand text-[0.75rem] text-warm-cream/50">{about.expandHint}</span>
+            <ArrowIcon />
+          </Link>
+        </article>
+
+        {/* 4 · Right-bottom card: Understand → Simplify → Build */}
+        <div id="approach" className="uv-ab__card uv-ab__card--steps" style={step(2)}>
+          <svg className="uv-ab__steps" viewBox="0 0 240 150" role="img" aria-label={about.stepsLabel}>
+            <path className="uv-ab__draw uv-ab__steps-link" d="M44 38v30h40M104 80v30h40" pathLength={1} />
+            <rect className="uv-ab__step uv-ab__step--1" x="20" y="16" width="96" height="22" rx="11" />
+            <rect className="uv-ab__step uv-ab__step--2" x="72" y="58" width="96" height="22" rx="11" />
+            <rect className="uv-ab__step uv-ab__step--3" x="124" y="100" width="96" height="22" rx="11" />
+            <circle className="uv-ab__draw uv-ab__steps-deg" cx="226" cy="96" r="4" pathLength={1} />
+          </svg>
+        </div>
+
+        {/* 5 · Founders note: the section's one cream spotlight */}
+        <article className="uv-ab__note" style={step(3)} aria-labelledby="about-note-label">
+          <ul className="uv-ab__founders" role="list">
+            {FOUNDERS.map((f) => (
+              <li key={f.name} className="uv-ab__founder">
+                <span className="uv-ab__portrait">
+                  {f.photo ? (
+                    <DuotonePhoto photo={f.photo} className="uv-ab__portrait-img" />
+                  ) : (
+                    <svg viewBox="0 0 10 10" aria-hidden="true">
+                      <circle cx="5" cy="5" r="2.2" />
+                    </svg>
+                  )}
+                </span>
+                <span className="uv-micro uv-ab__founder-tag">{about.note.portraitLabel}</span>
+                <span className="uv-ab__founder-name">{f.name}</span>
+                <span className="uv-ab__founder-role">{f.role}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="uv-ab__note-copy">
+            <h3 className="uv-micro uv-ab__note-label" id="about-note-label">
+              {about.note.label}
+            </h3>
+            <p className="uv-ab__note-text">{about.note.sentences.join(' ')}</p>
+            <p className="uv-ab__signoff">— {signOff}</p>
           </div>
+        </article>
 
-          <div className="grid grid-cols-[repeat(3,1fr)] [align-items:start] gap-6 mobile:grid-cols-[1fr] mobile:gap-4">
-            {PRINCIPLES.map((item) => {
-              const isActive = activeCard === item.id
-
-              return (
-                <article
-                  key={item.id}
-                  className={`relative overflow-hidden rounded-[18px] border [transition:border-color_0.25s_ease,background-color_0.25s_ease,transform_0.25s_ease,box-shadow_0.25s_ease] hover:[transform:translateY(-2px)] motion-reduce:transition-none ${
-                    isActive
-                      ? 'border-warm-cream/55 bg-[#0e204b] shadow-[0_12px_30px_-10px_rgba(1,7,54,0.8),0_0_0_1px_rgba(252,241,208,0.15)]'
-                      : 'border-slate-blue/70 bg-deep-navy hover:border-warm-cream/35'
-                  }`}
-                >
-                  <button
-                    type="button"
-                    className="block w-full cursor-pointer border-none bg-transparent px-7 pt-7 pb-5 text-left text-inherit [font:inherit] focus-visible:rounded-[18px] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-warm-cream"
-                    onClick={() => toggleCard(item.id)}
-                    aria-expanded={isActive}
-                    aria-controls={`principle-detail-${item.id}`}
-                    id={`principle-btn-${item.id}`}
-                  >
-                    <div className="mb-5 flex items-center justify-between">
-                      <span
-                        className={`font-brand text-[0.82rem] font-bold tracking-[0.16em] [transition:color_0.2s_ease] ${
-                          isActive ? 'text-warm-cream' : 'text-warm-cream/60'
-                        }`}
-                      >
-                        {item.index}
-                      </span>
-                      <span
-                        className={`inline-flex h-7 w-7 items-center justify-center rounded-[50%] border font-brand text-[1.1rem] leading-none text-warm-cream [transition:transform_0.25s_ease,background-color_0.25s_ease,border-color_0.25s_ease] motion-reduce:transition-none ${
-                          isActive ? 'border-warm-cream/40 bg-warm-cream/12' : 'border-slate-blue/90 bg-midnight/40'
-                        }`}
-                        aria-hidden="true"
-                      >
-                        {isActive ? '−' : '+'}
-                      </span>
-                    </div>
-
-                    <h3 className="m-0 mb-2 font-editorial text-[1.35rem] font-semibold tracking-[-0.01em] text-warm-cream">
-                      {item.title}
-                    </h3>
-                    <p className="m-0 font-brand text-[1.02rem] leading-[1.45] font-medium text-warm-cream/92">
-                      {item.shortDesc}
-                    </p>
-                  </button>
-
-                  <div
-                    id={`principle-detail-${item.id}`}
-                    role="region"
-                    aria-labelledby={`principle-btn-${item.id}`}
-                    className={`grid [transition:grid-template-rows_0.3s_cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-                      isActive ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                    }`}
-                  >
-                    <div className="overflow-hidden px-7 pb-7">
-                      <div className="mb-4 h-px bg-slate-blue/70" />
-                      <p className="m-0 font-brand text-[0.93rem] leading-[1.65] text-warm-cream/82">{item.expanded}</p>
-                    </div>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
+        {/* 6 · First-clients marquee — fill CLIENT_LOGOS to swap placeholders for real logos */}
+        <div className="uv-ab__strip" style={step(4)}>
+          <h3 className="uv-label">{about.clients.label}</h3>
+          <ClientMarquee />
+          <p className="uv-ab__strip-line">{about.clients.line}</p>
         </div>
       </div>
     </section>
+  )
+}
+
+interface DuotonePhotoProps {
+  photo: Photo
+  className: string
+}
+
+/** Uses the navy→cream `#uv-duotone` SVG filter defined in SiteChrome. */
+function DuotonePhoto({ photo, className }: DuotonePhotoProps) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- slot for a single local photo; swap to next/image once assets exist
+    <img className={className} src={photo.src} width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" />
   )
 }

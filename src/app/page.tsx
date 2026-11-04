@@ -1,24 +1,22 @@
 import { About } from '@/components/About'
 import { Contact } from '@/components/Contact'
-import { Footer } from '@/components/Footer'
 import { Hero } from '@/components/Hero'
 import { IntroShell } from '@/components/IntroShell'
-import { Navbar } from '@/components/Navbar'
 import { Services } from '@/components/Services'
+import { SiteChrome } from '@/components/SiteChrome'
+import { Work } from '@/components/Work'
 
+/** Home: the brand intro, then every section in one scroll. Each section also has its own page. */
 export default function HomePage() {
   return (
     <IntroShell>
-      <Navbar />
-
-      <main id="main-content">
+      <SiteChrome>
         <Hero />
         <Services />
+        <Work />
         <About />
         <Contact />
-      </main>
-
-      <Footer />
+      </SiteChrome>
     </IntroShell>
   )
 }
