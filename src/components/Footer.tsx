@@ -1,72 +1,68 @@
-interface FooterProps {
-  onReplayIntro: () => void
-}
+import { a11y } from '@/content/a11y'
+import { FOOTER_LINKS, footer } from '@/content/footer'
+import { brand } from '@/content/site'
+import { BackToTopButton, FooterBrandLink, ReplayIntroButton } from './FooterActions'
 
-export function Footer({ onReplayIntro }: FooterProps) {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+const footerAction =
+  'inline-flex cursor-pointer items-center gap-[0.4rem] border-none bg-transparent p-0 font-brand text-[0.86rem] text-warm-cream [transition:color_0.2s_ease] hover:text-warm-cream/80'
 
+export function Footer() {
+  // Rendered at build time (static page); the client-only app computed this in the browser.
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="studio-footer" role="contentinfo">
-      <div className="section-container footer-container">
-        <div className="footer-top">
-          <div className="footer-brand-col">
-            <a href="#hero" className="footer-brand-title" onClick={(e) => { e.preventDefault(); scrollToTop(); }}>
-              UnValor<span className="brand-degree">°</span>
-            </a>
-            <p className="footer-signature-line">BY UJJESHA</p>
-            <p className="footer-brand-tagline">
-              Digital product studio for founders, creators, and engineering teams.
+    <footer className="border-t border-border-subtle bg-midnight pt-20 pb-12" role="contentinfo">
+      <div className="section-container">
+        <div className="mb-16 grid grid-cols-[1.8fr_1fr_1fr] gap-14 mobile:grid-cols-[1fr] mobile:gap-10">
+          <div>
+            <FooterBrandLink className="inline-flex items-baseline gap-[0.1rem] font-editorial text-[1.6rem] font-bold text-warm-cream no-underline">
+              {brand.wordmark}
+              <span className="font-brand text-[1.15rem] font-bold text-warm-cream">{brand.degree}</span>
+            </FooterBrandLink>
+            <p className="mx-0 mt-[0.35rem] mb-4 font-brand text-[0.65rem] font-medium tracking-[0.42em] text-warm-cream uppercase">
+              {footer.signature}
             </p>
+            <p className="m-0 max-w-[340px] font-brand text-[0.9rem] leading-[1.6] text-warm-cream/82">{footer.tagline}</p>
           </div>
 
-          <div className="footer-links-col">
-            <span className="footer-col-heading">Navigation</span>
-            <ul className="footer-nav-list">
-              <li><a href="#hero">Home</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#approach">Our Approach</a></li>
-              <li><a href="#about">About Studio</a></li>
-              <li><a href="#contact">Contact</a></li>
+          <div>
+            <span className="mb-5 block font-brand text-[0.72rem] font-semibold tracking-[0.22em] text-warm-cream/60 uppercase">
+              {footer.navHeading}
+            </span>
+            <ul className="m-0 flex list-none flex-col gap-3 p-0">
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="font-brand text-[0.86rem] text-warm-cream/75 no-underline [transition:color_0.2s_ease] hover:text-warm-cream"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div className="footer-links-col">
-            <span className="footer-col-heading">Experience</span>
-            <ul className="footer-nav-list">
+          <div>
+            <span className="mb-5 block font-brand text-[0.72rem] font-semibold tracking-[0.22em] text-warm-cream/60 uppercase">
+              {footer.experienceHeading}
+            </span>
+            <ul className="m-0 flex list-none flex-col gap-3 p-0">
               <li>
-                <button
-                  type="button"
-                  className="footer-replay-action"
-                  onClick={onReplayIntro}
-                  title="Replay the animated brand-reveal intro sequence"
-                >
-                  <span className="replay-btn-icon" aria-hidden="true">↺</span> Replay Brand Reveal
-                </button>
+                <ReplayIntroButton className={footerAction} title={a11y.footer.replayTitle}>
+                  <span aria-hidden="true">↺</span> {footer.replay}
+                </ReplayIntroButton>
               </li>
               <li>
-                <button
-                  type="button"
-                  className="footer-replay-action"
-                  onClick={scrollToTop}
-                >
-                  ↑ Back to Top
-                </button>
+                <BackToTopButton className={footerAction}>{footer.backToTop}</BackToTopButton>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <p className="footer-copyright">
-            © {currentYear} UnValor. All rights reserved.
-          </p>
-          <p className="footer-colophon">
-            Midnight Navy · Deep Navy · Slate Blue · Warm Cream
-          </p>
+        <div className="flex items-center justify-between border-t border-border-subtle pt-8 font-brand text-[0.78rem] text-warm-cream/60 mobile:flex-col mobile:gap-3 mobile:text-center">
+          <p className="m-0">{footer.copyright(currentYear)}</p>
+          <p className="m-0">{footer.colophon}</p>
         </div>
       </div>
     </footer>

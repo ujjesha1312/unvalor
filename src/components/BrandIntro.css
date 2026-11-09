@@ -1,0 +1,228 @@
+/* BrandIntro — animated SVG wordmark reveal.
+   Ported verbatim from the original App.css §1 (stroke-draw keyframes driven
+   by the per-letter --stroke-len / --delay custom properties). */
+
+.brand-reveal-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-midnight);
+  z-index: 1000;
+  overflow: hidden;
+  padding: 2rem;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.85s ease;
+}
+
+.brand-reveal-wrapper.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.intro-skip-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: transparent;
+  border: 1px solid rgba(34, 57, 111, 0.65);
+  color: rgba(252, 241, 208, 0.7);
+  font-family: var(--font-brand);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.9rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 20;
+}
+
+.intro-skip-btn:hover {
+  color: var(--color-warm-cream);
+  border-color: var(--color-warm-cream);
+  background: rgba(34, 57, 111, 0.4);
+}
+
+.brand-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(34, 57, 111, 0.22) 0%,
+    rgba(1, 7, 54, 0) 72%
+  );
+  opacity: 0.85;
+}
+
+.brand-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 680px;
+  z-index: 1;
+}
+
+.brand-svg {
+  width: 100%;
+  height: auto;
+  max-height: 42vh;
+  overflow: visible;
+}
+
+.letter-outline {
+  fill: transparent;
+  stroke: var(--color-warm-cream);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: var(--stroke-len, 400);
+  stroke-dashoffset: var(--stroke-len, 400);
+  animation: 
+    drawStroke 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards,
+    fillSolid 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0.2s), 2.5s;
+}
+
+.degree-symbol {
+  fill: transparent;
+  stroke: var(--color-warm-cream);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 45;
+  stroke-dashoffset: 45;
+  animation: 
+    drawDegree 1.0s cubic-bezier(0.22, 1, 0.36, 1) 2.2s forwards,
+    fillDegree 0.8s cubic-bezier(0.22, 1, 0.36, 1) 2.7s forwards;
+}
+
+.signature-block {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: revealSignature 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.9s forwards;
+}
+
+.signature-text {
+  font-family: var(--font-brand);
+  font-size: clamp(0.62rem, 1vw, 0.74rem);
+  font-weight: 500;
+  letter-spacing: 0.52em;
+  text-transform: uppercase;
+  color: rgba(252, 241, 208, 0.75);
+  margin: 0;
+  padding-left: 0.52em;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.controls-dock {
+  position: absolute;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+  opacity: 0;
+  animation: fadeInControl 1s ease-out 3.9s forwards;
+}
+
+.replay-button {
+  background: transparent;
+  border: 1px solid rgba(34, 57, 111, 0.65);
+  color: rgba(252, 241, 208, 0.75);
+  font-family: var(--font-brand);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.42rem 1.05rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.replay-button:hover,
+.replay-button:focus-visible {
+  border-color: var(--color-warm-cream);
+  color: var(--color-warm-cream);
+  background-color: rgba(34, 57, 111, 0.4);
+  transform: translateY(-1px);
+}
+
+.replay-icon {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+
+.hold-indicator {
+  font-family: var(--font-brand);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: rgba(252, 241, 208, 0.45);
+  text-transform: uppercase;
+}
+
+@keyframes drawStroke {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fillSolid {
+  to { fill: var(--color-warm-cream); }
+}
+@keyframes drawDegree {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fillDegree {
+  to { fill: var(--color-warm-cream); }
+}
+@keyframes revealSignature {
+  to {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInControl {
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letter-outline {
+    stroke-dashoffset: 0 !important;
+    fill: var(--color-warm-cream) !important;
+    animation: none !important;
+  }
+  .degree-symbol {
+    stroke-dashoffset: 0 !important;
+    fill: var(--color-warm-cream) !important;
+    animation: none !important;
+  }
+  .signature-block,
+  .controls-dock {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .brand-reveal-wrapper {
+    transition: none !important;
+    animation: none !important;
+  }
+}
