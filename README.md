@@ -35,12 +35,18 @@ npm run dev        # http://localhost:3000
 content.md            All site copy, in page order (source of truth for wording)
 src/
   app/
-    layout.tsx        <html>, fonts, metadata, pre-paint intro gate
-    page.tsx          Page composition
+    layout.tsx        <html>, fonts, metadata (title template), pre-paint intro gate
+    page.tsx          Home: brand intro + every section in one scroll
+    services/ work/ about/ contact/
+      page.tsx        Each section as its own page (+ room for page-only content, "Next" band)
     globals.css       Tailwind import, design tokens, base styles
-  components/         One file per section (+ scoped CSS for BrandIntro, Navbar, Services)
+  components/         One file per section, plus SiteChrome (nav, main, footer), SectionHead, NextPage
+    ui/               Adapted 21st.dev blocks: feature bento (Services), bento gallery (Work)
+    uv.css            Navbar, hero and footer styles
+    sections.css      Services, Work, About and Contact styles
   content/            Typed copy modules — mirror content.md exactly
-  lib/                Small client helpers (intro gate, hydration hook)
+  lib/                Small client helpers (intro gate, hydration, scroll reveal)
+ref/                  Design references (hero/orbit mocks, tokens)
 public/favicon.svg
 ```
 

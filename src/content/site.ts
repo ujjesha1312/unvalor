@@ -4,9 +4,9 @@
  */
 
 export const site = {
-  title: 'UnValor°',
-  /** No description existed before the migration; this reuses the Hero subhead verbatim. */
-  description: 'We turn thoughtful ideas into digital products built for real life.',
+  name: 'UnValor°',
+  title: 'UnValor° — Less chaos. More customers.',
+  description: 'UnValor builds websites, WhatsApp replies and automations for local businesses.',
 } as const
 
 export const brand = {
@@ -14,45 +14,77 @@ export const brand = {
   degree: '°',
 } as const
 
-export type SectionId = 'hero' | 'services' | 'approach' | 'about' | 'contact'
+export type SectionId = 'hero' | 'services' | 'work' | 'approach' | 'about' | 'contact'
+
+/** Each section also has its own page. */
+export type PageSlug = 'services' | 'work' | 'about' | 'contact'
+export type PageHref = `/${PageSlug}`
 
 export interface NavItem {
   readonly label: string
-  readonly href: `#${SectionId}`
-  readonly isDropdown?: boolean
+  readonly href: PageHref
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Services', href: '#services' },
-  { label: 'Our Approach', href: '#approach' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact', isDropdown: true },
+  { label: 'Services', href: '/services' },
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ]
 
-/** Section ids tracked by the Navbar scroll spy, in page order. */
-export const SCROLL_SPY_SECTIONS: readonly SectionId[] = ['hero', 'services', 'approach', 'about', 'contact']
+/** Routes used by CTAs across the site. */
+export const ROUTES = {
+  home: '/',
+  services: '/services',
+  work: '/work',
+  about: '/about',
+  contact: '/contact',
+} as const satisfies Record<string, '/' | PageHref>
 
-export const navCta = {
-  desktop: "Let's talk",
-  mobile: "Let's talk",
-  drawer: "Let's talk ↗",
-  drawerReplay: 'Replay Brand Reveal',
+export interface PageMeta {
+  readonly title: string
+  readonly description: string
+}
+
+/** <title> (gets the " — UnValor°" suffix from the layout template) and meta description per page. */
+export const PAGE_META: Record<PageSlug, PageMeta> = {
+  services: {
+    title: 'Services',
+    description: 'Practical digital tools, websites, MVPs and automation for small businesses and startups.',
+  },
+  work: {
+    title: 'Work',
+    description: 'Selected work from UnValor°. Case studies arrive as projects ship.',
+  },
+  about: {
+    title: 'About',
+    description: 'UnValor° is a small studio in Visakhapatnam building for busy businesses.',
+  },
+  contact: {
+    title: 'Contact',
+    description: "Tell us what you're building. Let's figure out the next step.",
+  },
+}
+
+/** Footer of each sub-page: where to go next. */
+export const PAGE_NEXT: Record<PageSlug, NavItem> = {
+  services: { label: 'Work', href: '/work' },
+  work: { label: 'About', href: '/about' },
+  about: { label: 'Contact', href: '/contact' },
+  contact: { label: 'Services', href: '/services' },
+}
+
+export const pageNext = {
+  label: 'Next',
 } as const
 
-export const contactDropdown = {
-  eyebrow: 'START A CONVERSATION',
-  email: {
-    title: 'Send an Email',
-    description: 'Have a project, product idea, or question? Write to us.',
-    action: 'Compose Email',
-    subject: 'UnValor Inquiry',
-    unverifiedTag: 'Setup in progress · Email pending',
-  },
-  explore: {
-    title: 'Explore UnValor',
-    description: "See what we're building and the problems we want to solve.",
-    action: 'Explore the Studio',
-  },
-  footerLink: 'Go to inquiry section ↓',
+export const nav = {
+  talk: 'Talk to us',
+  book: 'Book a call',
+  bookHover: 'Pick a time',
+  menu: 'Menu',
+  close: 'Close',
+  drawerNote: 'Reply within a working day',
+  drawerBook: 'Book a free 20-min call',
+  drawerTalk: 'Talk to us',
 } as const

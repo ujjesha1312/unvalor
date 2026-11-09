@@ -1,9 +1,9 @@
 /**
- * Contact copy and studio contact configuration. Mirrors content.md §6.
+ * Contact copy and studio contact configuration. Mirrors content.md §7.
  *
  * `isVerified`: keep `false` until the official studio inbox is operational.
- * When false, the Navbar dropdown renders a "setup in progress" tag instead of a
- * live mailto link. To activate live mailto links, update `email` and set `isVerified: true`.
+ * When false, Contact and Footer show the address with a "setup in progress" notice
+ * instead of a live mailto link. To activate live mailto links, update `email` and set `isVerified: true`.
  */
 
 export interface ContactConfig {
@@ -39,15 +39,14 @@ export const CONTACT_OPTIONS: readonly [OptionItem, ...OptionItem[]] = [
 ]
 
 export const contact = {
-  eyebrow: "LET'S CONNECT",
+  num: '(04)',
+  label: 'Contact',
   heading: { line1: 'Have an idea?', line2: "Let's make it real." },
   paragraph: "Tell us what you're building. Let's figure out the next step.",
-  badgeMark: 'U°',
-  badgeLabel: 'UNVALOR° · EARLY-STAGE STUDIO',
   prompt: 'What are you working on?',
   /** Same message for every chip. */
   chipMessage: 'Great. Tell us a little about it in your email.',
-  channelLabel: 'DIRECT EMAIL',
+  channelLabel: 'Direct email',
   primaryButton: 'Send us an email',
   copyButton: 'Copy email',
   copiedButton: 'Copied!',

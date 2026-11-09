@@ -1,27 +1,16 @@
-/** Footer copy. Mirrors content.md §7. */
+/** Footer copy. Mirrors content.md §8. */
 
-import type { SectionId } from './site'
-
-export interface FooterLink {
-  readonly label: string
-  readonly href: `#${SectionId}`
-}
+import { NAV_ITEMS, type NavItem } from './site'
 
 export const footer = {
-  signature: 'BY UJJESHA',
-  tagline: 'Digital product studio for founders, creators, and engineering teams.',
-  navHeading: 'Navigation',
-  experienceHeading: 'Experience',
-  replay: 'Replay Brand Reveal',
-  backToTop: '↑ Back to Top',
-  copyright: (year: number) => `© ${year} UnValor. All rights reserved.`,
-  colophon: 'Midnight Navy · Deep Navy · Slate Blue · Warm Cream',
+  bigLine1: 'Let’s make it',
+  bigLine2: 'run calm',
+  studioHeading: '(A) Studio',
+  talkHeading: '(B) Talk',
+  copyright: '© UnValor° Studio',
+  signature: 'By Ujjesha',
+  motto: 'Understand → Simplify → Build',
+  backToTop: 'Back to top ↑',
 } as const
 
-export const FOOTER_LINKS: readonly FooterLink[] = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Services', href: '#services' },
-  { label: 'Our Approach', href: '#approach' },
-  { label: 'About Studio', href: '#about' },
-  { label: 'Contact', href: '#contact' },
-]
+export const FOOTER_LINKS: readonly NavItem[] = NAV_ITEMS

@@ -1,69 +1,57 @@
-import { a11y } from '@/content/a11y'
+import Link from 'next/link'
+import { CONTACT_CONFIG } from '@/content/contact'
 import { FOOTER_LINKS, footer } from '@/content/footer'
-import { brand } from '@/content/site'
-import { BackToTopButton, FooterBrandLink, ReplayIntroButton } from './FooterActions'
-
-const footerAction =
-  'inline-flex cursor-pointer items-center gap-[0.4rem] border-none bg-transparent p-0 font-brand text-[0.86rem] text-warm-cream [transition:color_0.2s_ease] hover:text-warm-cream/80'
+import { hero } from '@/content/hero'
+import { ROUTES } from '@/content/site'
+import { MagneticCta } from './MagneticCta'
 
 export function Footer() {
-  // Rendered at build time (static page); the client-only app computed this in the browser.
-  const currentYear = new Date().getFullYear()
+  // Until the inbox is verified, the address is shown but links to the contact page instead of a live mailto.
+  const emailHref = CONTACT_CONFIG.isVerified ? `mailto:${CONTACT_CONFIG.email}` : ROUTES.contact
 
   return (
-    <footer className="border-t border-border-subtle bg-midnight pt-20 pb-12" role="contentinfo">
-      <div className="section-container">
-        <div className="mb-16 grid grid-cols-[1.8fr_1fr_1fr] gap-14 mobile:grid-cols-[1fr] mobile:gap-10">
-          <div>
-            <FooterBrandLink className="inline-flex items-baseline gap-[0.1rem] font-editorial text-[1.6rem] font-bold text-warm-cream no-underline">
-              {brand.wordmark}
-              <span className="font-brand text-[1.15rem] font-bold text-warm-cream">{brand.degree}</span>
-            </FooterBrandLink>
-            <p className="mx-0 mt-[0.35rem] mb-4 font-brand text-[0.65rem] font-medium tracking-[0.42em] text-warm-cream uppercase">
-              {footer.signature}
-            </p>
-            <p className="m-0 max-w-[340px] font-brand text-[0.9rem] leading-[1.6] text-warm-cream/82">{footer.tagline}</p>
-          </div>
-
-          <div>
-            <span className="mb-5 block font-brand text-[0.72rem] font-semibold tracking-[0.22em] text-warm-cream/60 uppercase">
-              {footer.navHeading}
-            </span>
-            <ul className="m-0 flex list-none flex-col gap-3 p-0">
-              {FOOTER_LINKS.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="font-brand text-[0.86rem] text-warm-cream/75 no-underline [transition:color_0.2s_ease] hover:text-warm-cream"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <span className="mb-5 block font-brand text-[0.72rem] font-semibold tracking-[0.22em] text-warm-cream/60 uppercase">
-              {footer.experienceHeading}
-            </span>
-            <ul className="m-0 flex list-none flex-col gap-3 p-0">
-              <li>
-                <ReplayIntroButton className={footerAction} title={a11y.footer.replayTitle}>
-                  <span aria-hidden="true">↺</span> {footer.replay}
-                </ReplayIntroButton>
-              </li>
-              <li>
-                <BackToTopButton className={footerAction}>{footer.backToTop}</BackToTopButton>
-              </li>
-            </ul>
-          </div>
+    <footer className="uv-root uv-footer">
+      <div className="uv-footer__in">
+        <div>
+          <p className="uv-footer__big">
+            {footer.bigLine1}
+            <br />
+            {footer.bigLine2}
+            <svg className="uv-deg" viewBox="0 0 10 10" aria-hidden="true">
+              <circle cx="5" cy="5" r="3.8" />
+            </svg>
+          </p>
+          <MagneticCta href={ROUTES.contact} label={hero.primaryButton} hoverLabel={hero.primaryButtonHover} />
         </div>
 
-        <div className="flex items-center justify-between border-t border-border-subtle pt-8 font-brand text-[0.78rem] text-warm-cream/60 mobile:flex-col mobile:gap-3 mobile:text-center">
-          <p className="m-0">{footer.copyright(currentYear)}</p>
-          <p className="m-0">{footer.colophon}</p>
+        <nav className="uv-footer__col" aria-labelledby="footer-studio">
+          <h2 className="uv-label" id="footer-studio">
+            {footer.studioHeading}
+          </h2>
+          {FOOTER_LINKS.map((link) => (
+            <Link key={link.href} href={link.href}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="uv-footer__col">
+          <h2 className="uv-label">{footer.talkHeading}</h2>
+          {CONTACT_CONFIG.isVerified ? (
+            <a href={emailHref}>{CONTACT_CONFIG.email}</a>
+          ) : (
+            <Link href={emailHref}>{CONTACT_CONFIG.email}</Link>
+          )}
+          <p className="uv-footer__note">{CONTACT_CONFIG.statusNote}</p>
         </div>
+      </div>
+
+      <div className="uv-footer__base uv-micro">
+        <span>
+          {footer.copyright} · {footer.signature}
+        </span>
+        <span>{footer.motto}</span>
+        <a href="#top">{footer.backToTop}</a>
       </div>
     </footer>
   )

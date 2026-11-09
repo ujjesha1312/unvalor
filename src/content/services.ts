@@ -1,52 +1,62 @@
 /** Services copy. Mirrors content.md §4. */
 
 export const services = {
-  eyebrow: 'Services & Focus',
+  num: '(01)',
+  label: 'Services & Focus',
   heading: 'Capabilities crafted for everyday utility.',
-  intro:
-    'We build practical digital tools for small businesses and focused software for startups. Drag cards to reorganize your view.',
-  dragHint: 'Drag grip to rearrange',
-  reset: '↺ Reset layout',
+  intro: 'We build practical digital tools for small businesses and focused software for startups.',
 } as const
 
+export type ServiceIcon = 'tools' | 'web' | 'flow' | 'build'
 export type VisualType = 'tools' | 'web' | 'automation' | 'collaboration'
 
-export interface FeatureCardData {
+export interface ServiceItem {
   readonly id: string
+  readonly icon: ServiceIcon
+  readonly tag: string
   readonly title: string
-  readonly category: string
-  readonly description: string
-  readonly visualType: VisualType
+  readonly body: string
+  readonly visual: VisualType
+  /** Spans two columns on desktop. */
+  readonly wide: boolean
 }
 
-export const INITIAL_CARDS: readonly FeatureCardData[] = [
+export const SERVICE_ITEMS: readonly ServiceItem[] = [
   {
     id: 'card-tools',
+    icon: 'tools',
+    tag: 'Small business software',
     title: 'Practical Business Tools',
-    category: 'SMALL BUSINESS SOFTWARE',
-    description: 'Practical digital tools that help small businesses streamline daily operations.',
-    visualType: 'tools',
+    body: 'Practical digital tools that help small businesses streamline daily operations.',
+    visual: 'tools',
+    wide: true,
   },
   {
     id: 'card-web',
+    icon: 'web',
+    tag: 'Web development',
     title: 'Websites & MVPs',
-    category: 'WEB DEVELOPMENT',
-    description: 'Fast, thoughtful websites and useful first versions of digital products.',
-    visualType: 'web',
+    body: 'Fast, thoughtful websites and useful first versions of digital products.',
+    visual: 'web',
+    wide: false,
   },
   {
     id: 'card-ai',
+    icon: 'flow',
+    tag: 'AI & automation',
     title: 'AI & Workflow Automation',
-    category: 'AI & AUTOMATION',
-    description: 'Practical automation that reduces repetitive work and makes information easier to use.',
-    visualType: 'automation',
+    body: 'Practical automation that reduces repetitive work and makes information easier to use.',
+    visual: 'automation',
+    wide: false,
   },
   {
     id: 'card-collab',
+    icon: 'build',
+    tag: 'Early-stage collaboration',
     title: 'Build With UnValor',
-    category: 'EARLY-STAGE COLLABORATION',
-    description: "Have a real problem to solve? Let's explore a practical first version together.",
-    visualType: 'collaboration',
+    body: "Have a real problem to solve? Let's explore a practical first version together.",
+    visual: 'collaboration',
+    wide: true,
   },
 ]
 
@@ -72,5 +82,6 @@ export const visuals = {
   collaboration: {
     status: 'Direct Founder Collaboration',
     cta: 'Start a project',
+    ctaHover: "Let's talk",
   },
 } as const
